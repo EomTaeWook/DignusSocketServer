@@ -1,0 +1,9 @@
+
+.vs/*
+Echo/.vs/*
+Echo/bin/*
+Echo/obj/*
+Echo/Properties/*
+EchoClient/.vs/*
+EchoClient/bin/*
+EchoClient/obj/*
