@@ -17,15 +17,24 @@ namespace EchoClient
                                                 new DummyDeserializer(),
                                                 null);
 
-            var client = new ClientModule(sessionCreator);
-            client.Connect("127.0.0.1", 35000);
-            for (int i = 0; i < 1000; ++i)
+
+            Parallel.For(0, 100000, (i) =>
             {
-                client.Send(new Packet($"client : {i}"));
-            }
-            
+                var client = new ClientModule(sessionCreator);
+                try
+                {
+                    client.Connect("127.0.0.1", 35000);
+                    client.Send(new Packet($"client : {i}"));
+                    client.Close();
+                }
+                catch(Exception ex)
+                {
+                    LogHelper.Error(ex);
+                }
+                
+            });
+
             Console.ReadLine();
-            client.Close();
         }
     }
 }

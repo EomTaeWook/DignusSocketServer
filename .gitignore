@@ -7,3 +7,4 @@ Echo/Properties/*
 EchoClient/.vs/*
 EchoClient/bin/*
 EchoClient/obj/*
+Echo/Echo.csproj.user
