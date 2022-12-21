@@ -18,12 +18,13 @@ namespace EchoClient
                                                 null);
 
 
-            Parallel.For(0, 100000, (i) =>
+            Parallel.For(0, 10000, (i) =>
             {
-                var client = new ClientModule(sessionCreator);
                 try
                 {
-                    client.Connect("127.0.0.1", 35000);
+                    var client = new ClientModule(sessionCreator);
+                    client.Connect("13.125.232.85", 35000);
+                    //client.Connect("127.0.0.1", 35000);
                     client.Send(new Packet($"client : {i}"));
                     client.Close();
                 }
@@ -35,6 +36,6 @@ namespace EchoClient
             });
 
             Console.ReadLine();
-        }
+        } 
     }
 }
