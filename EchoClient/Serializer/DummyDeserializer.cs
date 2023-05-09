@@ -2,30 +2,47 @@
 using Kosher.Log;
 using Kosher.Sockets.Interface;
 using System.Text;
+using System.Text.Json;
+
 
 namespace EchoClient.Serializer
 {
     internal class DummyDeserializer : IPacketDeserializer
     {
-        public void Deserialize(Vector<byte> buffer)
+        private const int SizeToInt = sizeof(int);
+
+        public DummyDeserializer()
         {
-            var bytes = buffer.Read(sizeof(int));
-            var length = BitConverter.ToInt32(bytes);
-            var bodyBytes = buffer.Read(length);
-            var text = Encoding.UTF8.GetString(bodyBytes);
-            LogHelper.Debug($"Receive Deserialize : {text}");
         }
 
-        public bool IsTakedCompletePacket(Vector<byte> buffer)
+        public void Deserialize(ArrayList<byte> buffer)
         {
-            if (buffer.Count < sizeof(int))
+            var packetSize = BitConverter.ToInt32(buffer.Read(SizeToInt));
+            LogHelper.Debug($"[{DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss:fff")}] Deserialize packet size : {packetSize} ");
+
+            if(packetSize == 0)
+            {
+
+            }
+            var bodyBytes = buffer.Read(packetSize);
+            var str = Encoding.UTF8.GetString(bodyBytes);
+            LogHelper.Debug($"[{DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss:fff")}] Deserialize : {str} ");
+            var packet = JsonSerializer.Deserialize<DummyPacket>(str);
+            packet.Receive = DateTime.Now;
+            ClientModule.DummyPackets.Add(packet);
+        }
+        public bool IsTakedCompletePacket(ArrayList<byte> buffer)
+        {
+            if (buffer.Count <= SizeToInt)
             {
                 return false;
             }
-            LogHelper.Debug($"[{DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss:fff")}] buffer size : {buffer.Count}");
-            var bytes = buffer.Peek(sizeof(int));
-            var length = BitConverter.ToInt32(bytes);
-            return length + sizeof(int) <= buffer.Count;
+
+            var packetSize = BitConverter.ToInt32(buffer.Peek(SizeToInt));
+
+            LogHelper.Info($"[CompletePacket] packetSize : {packetSize}");
+
+            return buffer.Count >= packetSize + SizeToInt;
         }
     }
 }

@@ -1,33 +1,41 @@
 ﻿using Kosher.Collections;
 using Kosher.Log;
 using Kosher.Sockets.Interface;
+using System.Text;
 
 namespace Echo
 {
     public class DummyDeserializer : IPacketDeserializer
     {
+        private const int SizeToInt = sizeof(int);
         private readonly EchoHandler _protocolHandler;
+
         public DummyDeserializer(EchoHandler protocolHandler)
         {
             _protocolHandler = protocolHandler;
         }
-        public void Deserialize(Vector<byte> buffer)
+
+        public void Deserialize(ArrayList<byte> buffer)
         {
-            var bodyBytes = buffer.Read(buffer.LongCount);
+            var packetSize = BitConverter.ToInt32(buffer.Read(SizeToInt));
+            var bodyBytes = buffer.Read(packetSize);
             _protocolHandler.Process(bodyBytes);
         }
-        public bool IsTakedCompletePacket(Vector<byte> buffer)
+
+        public bool IsTakedCompletePacket(ArrayList<byte> buffer)
         {
-            if(_protocolHandler.GetSession().IsDispose() == true)
+            if (_protocolHandler.GetSession().IsDispose() == true)
             {
                 LogHelper.Debug($"{_protocolHandler.GetSession().Id} is closed");
+                return false;
             }
-            if (buffer.Count <= 0)
+
+            if (buffer.Count <= SizeToInt)
             {
                 return false;
             }
-            LogHelper.Debug($"[{DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss:fff")}] id : {_protocolHandler.GetSession().Id} buffer size : {buffer.Count} {Thread.CurrentThread.ManagedThreadId}");
-            return true;
+            var packetSize = BitConverter.ToInt32(buffer.Peek(SizeToInt));
+            return buffer.Count >= packetSize + SizeToInt;
         }
     }
 }

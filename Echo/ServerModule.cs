@@ -1,32 +1,32 @@
 ﻿using Kosher.Log;
 using Kosher.Sockets;
 using Kosher.Sockets.Interface;
+using Kosher.Sockets.ObjectPool;
 
 namespace Echo
 {
     internal class ServerModule
     {
-        readonly EchoHandler handler = new EchoHandler();
-        readonly DummyDeserializer _dummyDeserializer;
-        readonly DummySerializer _dummySerializer;
-
         EchoServer _server;
         bool isActive = false;
         public ServerModule()
         {
-            _dummyDeserializer = new DummyDeserializer(handler);
-            _dummySerializer = new DummySerializer();
         }
         public void Run()
         {
-            var sessionCreator = new SessionCreator(_dummySerializer,
-                                                _dummyDeserializer,
-                                                new List<ISessionComponent>() { handler });
+            var sessionCreator = new SessionCreator(() =>
+            {
+                EchoHandler handler = new EchoHandler();
+                return Tuple.Create<IPacketSerializer, IPacketDeserializer, ICollection<ISessionComponent>>(new DummySerializer(),
+                                                                                                            new DummyDeserializer(handler),
+                                                                                                            new List<ISessionComponent>() { handler });
+            },
+            LohMemoryPool<byte>.Instance);
             _server = new EchoServer(sessionCreator);
-            _server.Start(35000);
+            _server.Start(41000);
             isActive = true;
 
-            LogHelper.Debug("start server...");
+            LogHelper.Info($"start server... port : {41000}");
             while (isActive)
             {
                 Thread.Sleep(33);

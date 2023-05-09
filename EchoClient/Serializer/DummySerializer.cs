@@ -5,17 +5,30 @@ namespace EchoClient.Serializer
 {
     internal class DummySerializer : IPacketSerializer
     {
-        public Vector<byte> MakeSendBuffer(IPacket packet)
+        public ArrayList<byte> MakeSendBuffer(IPacket packet)
         {
             var sendPacket = packet as Packet;
 
-            var sendBuffer = new Vector<byte>();
+            var sendBuffer = new ArrayList<byte>();
 
             sendBuffer.AddRange(BitConverter.GetBytes(sendPacket.GetLength()));
 
             sendBuffer.AddRange(sendPacket.Body);
 
             return sendBuffer;
+        }
+
+        ArraySegment<byte> IPacketSerializer.MakeSendBuffer(IPacket packet)
+        {
+            var sendPacket = packet as Packet;
+
+            var sendBuffer = new ArrayList<byte>();
+
+            sendBuffer.AddRange(BitConverter.GetBytes(sendPacket.GetLength()));
+
+            sendBuffer.AddRange(sendPacket.Body);
+
+            return sendBuffer.ToArray();
         }
     }
 }

@@ -5,7 +5,7 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Echo", "Echo\Echo.csproj", "{54195096-AC62-4159-B522-387D9C5C591F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EchoClient", "EchoClient\EchoClient.csproj", "{09791570-D78B-4A6C-99D9-0A4022988DDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EchoClient", "EchoClient\EchoClient.csproj", "{09791570-D78B-4A6C-99D9-0A4022988DDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

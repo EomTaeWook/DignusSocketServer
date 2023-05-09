@@ -11,8 +11,7 @@ namespace Echo
             LogBuilder.Build();
 
             ServerModule serverModule = new ServerModule();
-
-            serverModule.Run();
+            serverModule.Run();         
         }
     }
 }

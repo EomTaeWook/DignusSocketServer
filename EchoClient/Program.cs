@@ -1,39 +1,145 @@
 ﻿using EchoClient.Serializer;
+using Kosher;
+using Kosher.Collections;
 using Kosher.Extensions.Log;
 using Kosher.Log;
 using Kosher.Sockets;
+using Kosher.Sockets.Interface;
+using Kosher.Sockets.ObjectPool;
 
 namespace EchoClient
 {
     internal class Program
     {
+
         static void Main(string[] args)
         {
             LogBuilder.Configuration(LogConfigXmlReader.Load($"{AppContext.BaseDirectory}KosherLog.config"));
             LogBuilder.Build();
 
-
-            var sessionCreator = new SessionCreator(new DummySerializer(),
-                                                new DummyDeserializer(),
-                                                null);
-
-
-            Parallel.For(0, 10000, (i) =>
+            var sessionCreator = new SessionCreator(() =>
             {
-                try
+                return Tuple.Create<IPacketSerializer, IPacketDeserializer, ICollection<ISessionComponent>>(new DummySerializer(),
+                                                                                                            new DummyDeserializer(),
+                                                                                                            new List<ISessionComponent>() {  });
+            },
+            LohMemoryPool<byte>.Instance);
+
+            var poolCount = 100;
+            var SendedCount = 200;
+
+            var clientPool = new List<ClientModule>();
+
+            for(var i=0; i< poolCount; ++i)
+            {
+                clientPool.Add(new ClientModule(sessionCreator));
+            }
+
+            for(var i =0; i<clientPool.Count; ++i)
+            {
+                //clientPool[i].Connect("54.180.99.221", 41000);
+                clientPool[i].Connect("127.0.0.1", 41000);
+                if (clientPool[i].IsConnect == true)
                 {
-                    var client = new ClientModule(sessionCreator);
-                    client.Connect("13.125.232.85", 35000);
-                    //client.Connect("127.0.0.1", 35000);
-                    client.Send(new Packet($"client : {i}"));
-                    client.Close();
+                    for(int ii=0; ii<SendedCount; ++ii)
+                    {
+                        DummyPacket packet = new()
+                        {
+                            Send = DateTime.Now,
+                            Index = i,
+                        };
+                        clientPool[i].Send(Packet.MakePacket(packet));
+                    }                    
                 }
-                catch(Exception ex)
+                else
                 {
-                    LogHelper.Error(ex);
+
                 }
-                
+            }
+            double avg = 0;
+
+            while(true)
+            {
+                if(SendedCount * clientPool.Count <=ClientModule.DummyPackets.Count)
+                {
+                    break;
+                }
+                DummyPacket packet = new()
+                {
+                    Send = DateTime.Now,
+                    Index = 0,
+                };
+                //clientPool[0].Send(Packet.MakePacket(packet));
+                //LogHelper.Debug($"rec count : {ClientModule.DummyPackets.Count}");
+                Thread.Sleep(33);
+            }
+
+            foreach (var item in ClientModule.DummyPackets )
+            {
+                avg += (item.Receive - item.Send).TotalMilliseconds;
+            }
+
+            avg = (avg/ 1000) / ClientModule.DummyPackets.Count;
+            
+            Console.WriteLine(avg);
+            ClientModule.DummyPackets.Clear();
+
+
+            //var result = Parallel.ForEach(clientPool, (c) => 
+            //{
+            //    //c.Connect("54.180.99.221", 41000);
+            //    c.Connect("127.0.0.1", 41000);
+            //    if(c.IsConnect == true)
+            //    {
+            //        for (var i = 0; i < 100; ++i)
+            //        {
+            //            DummyPacket packet = new()
+            //            {
+            //                Send = DateTime.Now,
+            //            };
+            //            c.Send(Packet.MakePacket(packet));
+            //        }
+            //    }
+            //    else
+            //    {
+
+            //    }
+            //    //c.Connect("54.180.99.221", 41000);
+            //    //for (var i = 0; i < 200; ++i)
+            //    //{
+            //    //    DummyPacket packet = new()
+            //    //    {
+            //    //        Send = DateTime.Now,
+            //    //    };
+            //    //    c.Send(Packet.MakePacket(packet));
+            //    //}               
+            //});
+
+            Parallel.ForEach(clientPool, (c) =>
+            {
+                c.Close();
+                //c.Connect("127.0.0.1", 41000);
             });
+
+            clientPool.Clear();
+
+            //Parallel.For(0, 1, (i) =>
+            //{
+            //    try
+            //    {
+
+            //        client.Connect("54.180.99.221", 41000);
+            //        //client.Connect("127.0.0.1", 41000);
+            //        for (long ii = 0; ii<1000; ++ii)
+            //        {
+            //            client.Send(new Packet($"string client : {ii}"));
+            //        }
+            //    }
+            //    catch(Exception ex)
+            //    {
+            //        LogHelper.Error(ex);
+            //    }
+            //});
 
             Console.ReadLine();
         } 
