@@ -1,6 +1,6 @@
-﻿using Kosher.Collections;
-using Kosher.Log;
-using Kosher.Sockets.Interface;
+﻿using Dignus.Collections;
+using Dignus.Log;
+using Dignus.Sockets.Interface;
 using System.Text;
 
 namespace Echo

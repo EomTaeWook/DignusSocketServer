@@ -9,19 +9,25 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="Kosher">
-      <HintPath>..\Dll\Kosher.dll</HintPath>
+    <Compile Remove="Properties\**" />
+    <EmbeddedResource Remove="Properties\**" />
+    <None Remove="Properties\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Dignus">
+      <HintPath>..\Dll\Dignus.dll</HintPath>
     </Reference>
-    <Reference Include="Kosher.Extensions">
-      <HintPath>..\Dll\Kosher.Extensions.dll</HintPath>
+    <Reference Include="Dignus.Extensions">
+      <HintPath>..\Dll\Dignus.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="Kosher.Sockets">
-      <HintPath>..\Dll\Kosher.Sockets.dll</HintPath>
+    <Reference Include="Dignus.Sockets">
+      <HintPath>..\Dll\Dignus.Sockets.dll</HintPath>
     </Reference>
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="KosherLog.config">
+    <None Update="DignusLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

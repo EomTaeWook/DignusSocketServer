@@ -1,9 +1,9 @@
-﻿using Kosher.Collections;
-using Kosher.Sockets;
+﻿using Dignus.Collections;
+using Dignus.Sockets;
 
 namespace EchoClient
 {
-    internal class ClientModule : BaseClient
+    internal class ClientModule : ClientBase
     {
         public static SynchronizedArrayList<DummyPacket> DummyPackets = new SynchronizedArrayList<DummyPacket>();
         private bool _isConnect = false;

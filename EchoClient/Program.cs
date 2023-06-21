@@ -1,11 +1,8 @@
 ﻿using EchoClient.Serializer;
-using Kosher;
-using Kosher.Collections;
-using Kosher.Extensions.Log;
-using Kosher.Log;
-using Kosher.Sockets;
-using Kosher.Sockets.Interface;
-using Kosher.Sockets.ObjectPool;
+using Dignus.Extensions.Log;
+using Dignus.Log;
+using Dignus.Sockets;
+using Dignus.Sockets.Interface;
 
 namespace EchoClient
 {
@@ -14,7 +11,7 @@ namespace EchoClient
 
         static void Main(string[] args)
         {
-            LogBuilder.Configuration(LogConfigXmlReader.Load($"{AppContext.BaseDirectory}KosherLog.config"));
+            LogBuilder.Configuration(LogConfigXmlReader.Load($"{AppContext.BaseDirectory}DignusLog.config"));
             LogBuilder.Build();
 
             var sessionCreator = new SessionCreator(() =>
@@ -22,11 +19,10 @@ namespace EchoClient
                 return Tuple.Create<IPacketSerializer, IPacketDeserializer, ICollection<ISessionComponent>>(new DummySerializer(),
                                                                                                             new DummyDeserializer(),
                                                                                                             new List<ISessionComponent>() {  });
-            },
-            LohMemoryPool<byte>.Instance);
+            });
 
-            var poolCount = 100;
-            var SendedCount = 200;
+            var poolCount = 1;
+            var SendedCount = 10000;
 
             var clientPool = new List<ClientModule>();
 
@@ -38,7 +34,7 @@ namespace EchoClient
             for(var i =0; i<clientPool.Count; ++i)
             {
                 //clientPool[i].Connect("54.180.99.221", 41000);
-                clientPool[i].Connect("127.0.0.1", 41000);
+                clientPool[i].Connect("127.0.0.1", 10000);
                 if (clientPool[i].IsConnect == true)
                 {
                     for(int ii=0; ii<SendedCount; ++ii)

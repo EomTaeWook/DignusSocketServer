@@ -1,4 +1,4 @@
-﻿using Kosher.Sockets.Interface;
+﻿using Dignus.Sockets.Interface;
 
 namespace Echo
 {

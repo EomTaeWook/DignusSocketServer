@@ -1,7 +1,7 @@
-﻿using Kosher.Collections;
-using Kosher.Log;
-using Kosher.Sockets;
-using Kosher.Sockets.Interface;
+﻿using Dignus.Collections;
+using Dignus.Log;
+using Dignus.Sockets;
+using Dignus.Sockets.Interface;
 using System.Text;
 
 namespace Echo
@@ -16,7 +16,7 @@ namespace Echo
                 return;
             }
             var str = Encoding.UTF8.GetString(body);
-            LogHelper.Debug($"[{DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss:fff")}] {str}");
+            //LogHelper.Debug($"[{DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss:fff")}] {str}");
 
             var sendBuffer = new ArrayList<byte>();
 
@@ -24,7 +24,7 @@ namespace Echo
 
             sendBuffer.AddRange(body);
 
-            _session.Send(sendBuffer.ToArray());
+            MessageSender.Instance.Broadcast(sendBuffer.ToArray());
         }
 
         public void SetSession(Session session)

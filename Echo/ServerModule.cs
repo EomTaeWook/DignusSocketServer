@@ -1,7 +1,6 @@
-﻿using Kosher.Log;
-using Kosher.Sockets;
-using Kosher.Sockets.Interface;
-using Kosher.Sockets.ObjectPool;
+﻿using Dignus.Log;
+using Dignus.Sockets;
+using Dignus.Sockets.Interface;
 
 namespace Echo
 {
@@ -17,16 +16,16 @@ namespace Echo
             var sessionCreator = new SessionCreator(() =>
             {
                 EchoHandler handler = new EchoHandler();
-                return Tuple.Create<IPacketSerializer, IPacketDeserializer, ICollection<ISessionComponent>>(new DummySerializer(),
-                                                                                                            new DummyDeserializer(handler),
-                                                                                                            new List<ISessionComponent>() { handler });
-            },
-            LohMemoryPool<byte>.Instance);
+                return Tuple.Create<IPacketSerializer, IPacketDeserializer, ICollection<ISessionComponent>>(
+                    new DummySerializer(),
+                    new DummyDeserializer(handler),
+                    new List<ISessionComponent>() { handler });
+            });
             _server = new EchoServer(sessionCreator);
-            _server.Start(41000);
+            _server.Start(10000);
             isActive = true;
 
-            LogHelper.Info($"start server... port : {41000}");
+            LogHelper.Info($"start server... port : {10000}");
             while (isActive)
             {
                 Thread.Sleep(33);

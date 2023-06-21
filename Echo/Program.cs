@@ -1,5 +1,5 @@
-﻿using Kosher.Extensions.Log;
-using Kosher.Log;
+﻿using Dignus.Extensions.Log;
+using Dignus.Log;
 
 namespace Echo
 {
@@ -7,7 +7,7 @@ namespace Echo
     {
         static void Main(string[] args)
         {
-            LogBuilder.Configuration(LogConfigXmlReader.Load($"{AppContext.BaseDirectory}KosherLog.config"));
+            LogBuilder.Configuration(LogConfigXmlReader.Load($"{AppContext.BaseDirectory}DignusLog.config"));
             LogBuilder.Build();
 
             ServerModule serverModule = new ServerModule();
