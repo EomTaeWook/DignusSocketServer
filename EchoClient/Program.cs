@@ -1,8 +1,8 @@
-﻿using EchoClient.Serializer;
-using Dignus.Extensions.Log;
+﻿using Dignus.Extensions.Log;
 using Dignus.Log;
 using Dignus.Sockets;
 using Dignus.Sockets.Interface;
+using EchoClient.Serializer;
 
 namespace EchoClient
 {
