@@ -5,7 +5,7 @@ namespace EchoClient
 {
     internal class ClientModule : ClientBase
     {
-        public static SynchronizedArrayList<DummyPacket> DummyPackets = new SynchronizedArrayList<DummyPacket>();
+        public static SynchronizedArrayQueue<DummyPacket> DummyPackets = new SynchronizedArrayQueue<DummyPacket>();
         private bool _isConnect = false;
         public ClientModule(SessionCreator sessionCreator) : base(sessionCreator)
         {

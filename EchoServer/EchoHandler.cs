@@ -1,12 +1,11 @@
 ﻿using Dignus.Collections;
-using Dignus.Log;
 using Dignus.Sockets;
 using Dignus.Sockets.Interface;
 using System.Text;
 
 namespace Echo
 {
-    public class EchoHandler : ISessionComponent
+    public class EchoHandler : ISessionHandler
     {
         private Session _session;
         public void Process(byte[] body)
@@ -18,7 +17,7 @@ namespace Echo
             var str = Encoding.UTF8.GetString(body);
             //LogHelper.Debug($"[{DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss:fff")}] {str}");
 
-            var sendBuffer = new ArrayList<byte>();
+            var sendBuffer = new ArrayQueue<byte>();
 
             sendBuffer.AddRange(BitConverter.GetBytes(body.Length));
 

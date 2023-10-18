@@ -1,7 +1,6 @@
 ﻿using Dignus.Collections;
 using Dignus.Log;
 using Dignus.Sockets.Interface;
-using System.Text;
 
 namespace Echo
 {
@@ -15,14 +14,14 @@ namespace Echo
             _protocolHandler = protocolHandler;
         }
 
-        public void Deserialize(ArrayList<byte> buffer)
+        public void Deserialize(ArrayQueue<byte> buffer)
         {
             var packetSize = BitConverter.ToInt32(buffer.Read(SizeToInt));
             var bodyBytes = buffer.Read(packetSize);
             _protocolHandler.Process(bodyBytes);
         }
 
-        public bool IsTakedCompletePacket(ArrayList<byte> buffer)
+        public bool IsCompletePacketInBuffer(ArrayQueue<byte> buffer)
         {
             if (_protocolHandler.GetSession().IsDispose() == true)
             {

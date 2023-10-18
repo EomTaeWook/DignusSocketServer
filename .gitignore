@@ -1,10 +1,9 @@
-
 .vs/*
-Echo/.vs/*
-Echo/bin/*
-Echo/obj/*
-Echo/Properties/*
+EchoServer/.vs/*
+EchoServer/bin/*
+EchoServer/obj/*
+EchoServer/Properties/*
 EchoClient/.vs/*
 EchoClient/bin/*
 EchoClient/obj/*
-Echo/Echo.csproj.user
+EchoServer/EchoServer.csproj.user

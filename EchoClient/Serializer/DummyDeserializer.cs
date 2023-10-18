@@ -15,12 +15,12 @@ namespace EchoClient.Serializer
         {
         }
 
-        public void Deserialize(ArrayList<byte> buffer)
+        public void Deserialize(ArrayQueue<byte> buffer)
         {
             var packetSize = BitConverter.ToInt32(buffer.Read(SizeToInt));
             LogHelper.Debug($"[{DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss:fff")}] Deserialize packet size : {packetSize} ");
 
-            if(packetSize == 0)
+            if (packetSize == 0)
             {
 
             }
@@ -31,7 +31,7 @@ namespace EchoClient.Serializer
             packet.Receive = DateTime.Now;
             ClientModule.DummyPackets.Add(packet);
         }
-        public bool IsTakedCompletePacket(ArrayList<byte> buffer)
+        public bool IsCompletePacketInBuffer(ArrayQueue<byte> buffer)
         {
             if (buffer.Count <= SizeToInt)
             {

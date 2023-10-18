@@ -15,11 +15,11 @@ namespace Echo
         {
             var sessionCreator = new SessionCreator(() =>
             {
-                EchoHandler handler = new EchoHandler();
-                return Tuple.Create<IPacketSerializer, IPacketDeserializer, ICollection<ISessionComponent>>(
+                EchoHandler handler = new();
+                return Tuple.Create<IPacketSerializer, IPacketDeserializer, ICollection<ISessionHandler>>(
                     new DummySerializer(),
                     new DummyDeserializer(handler),
-                    new List<ISessionComponent>() { handler });
+                    new List<ISessionHandler>() { handler });
             });
             _server = new EchoServer(sessionCreator);
             _server.Start(10000);

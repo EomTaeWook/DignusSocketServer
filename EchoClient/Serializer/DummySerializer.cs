@@ -5,11 +5,11 @@ namespace EchoClient.Serializer
 {
     internal class DummySerializer : IPacketSerializer
     {
-        public ArrayList<byte> MakeSendBuffer(IPacket packet)
+        public ArrayQueue<byte> MakeSendBuffer(IPacket packet)
         {
             var sendPacket = packet as Packet;
 
-            var sendBuffer = new ArrayList<byte>();
+            var sendBuffer = new ArrayQueue<byte>();
 
             sendBuffer.AddRange(BitConverter.GetBytes(sendPacket.GetLength()));
 
@@ -22,7 +22,7 @@ namespace EchoClient.Serializer
         {
             var sendPacket = packet as Packet;
 
-            var sendBuffer = new ArrayList<byte>();
+            var sendBuffer = new ArrayQueue<byte>();
 
             sendBuffer.AddRange(BitConverter.GetBytes(sendPacket.GetLength()));
 

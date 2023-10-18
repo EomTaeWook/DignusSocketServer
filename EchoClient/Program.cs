@@ -16,9 +16,11 @@ namespace EchoClient
 
             var sessionCreator = new SessionCreator(() =>
             {
-                return Tuple.Create<IPacketSerializer, IPacketDeserializer, ICollection<ISessionComponent>>(new DummySerializer(),
+                return Tuple.Create<IPacketSerializer,
+                    IPacketDeserializer,
+                    ICollection<ISessionHandler>>(new DummySerializer(),
                                                                                                             new DummyDeserializer(),
-                                                                                                            new List<ISessionComponent>() {  });
+                                                                                                            new List<ISessionHandler>() { });
             });
 
             var poolCount = 1;
@@ -26,18 +28,18 @@ namespace EchoClient
 
             var clientPool = new List<ClientModule>();
 
-            for(var i=0; i< poolCount; ++i)
+            for (var i = 0; i < poolCount; ++i)
             {
                 clientPool.Add(new ClientModule(sessionCreator));
             }
 
-            for(var i =0; i<clientPool.Count; ++i)
+            for (var i = 0; i < clientPool.Count; ++i)
             {
                 //clientPool[i].Connect("54.180.99.221", 41000);
                 clientPool[i].Connect("127.0.0.1", 10000);
                 if (clientPool[i].IsConnect == true)
                 {
-                    for(int ii=0; ii<SendedCount; ++ii)
+                    for (int ii = 0; ii < SendedCount; ++ii)
                     {
                         DummyPacket packet = new()
                         {
@@ -45,7 +47,7 @@ namespace EchoClient
                             Index = i,
                         };
                         clientPool[i].Send(Packet.MakePacket(packet));
-                    }                    
+                    }
                 }
                 else
                 {
@@ -54,9 +56,9 @@ namespace EchoClient
             }
             double avg = 0;
 
-            while(true)
+            while (true)
             {
-                if(SendedCount * clientPool.Count <=ClientModule.DummyPackets.Count)
+                if (SendedCount * clientPool.Count <= ClientModule.DummyPackets.Count)
                 {
                     break;
                 }
@@ -70,13 +72,13 @@ namespace EchoClient
                 Thread.Sleep(33);
             }
 
-            foreach (var item in ClientModule.DummyPackets )
+            foreach (var item in ClientModule.DummyPackets)
             {
                 avg += (item.Receive - item.Send).TotalMilliseconds;
             }
 
-            avg = (avg/ 1000) / ClientModule.DummyPackets.Count;
-            
+            avg = (avg / 1000) / ClientModule.DummyPackets.Count;
+
             Console.WriteLine(avg);
             ClientModule.DummyPackets.Clear();
 
@@ -138,6 +140,6 @@ namespace EchoClient
             //});
 
             Console.ReadLine();
-        } 
+        }
     }
 }
