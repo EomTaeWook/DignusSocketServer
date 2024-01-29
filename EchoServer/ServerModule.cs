@@ -16,6 +16,7 @@ namespace Echo
             var sessionCreator = new SessionCreator(() =>
             {
                 EchoHandler handler = new();
+
                 return Tuple.Create<IPacketSerializer, IPacketDeserializer, ICollection<ISessionHandler>>(
                     new DummySerializer(),
                     new DummyDeserializer(handler),

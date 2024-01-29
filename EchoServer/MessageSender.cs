@@ -1,13 +1,12 @@
 ﻿using Dignus.Collections;
 using Dignus.Framework;
 using Dignus.Sockets;
-using System.Diagnostics;
 
 namespace Echo
 {
     internal class MessageSender : Singleton<MessageSender>
     {
-        SynchronizedHashSet<Session> _sessions = new SynchronizedHashSet<Session>();
+        SynchronizedUniqueSet<Session> _sessions = new SynchronizedUniqueSet<Session>();
         public void AddSession(Session session)
         {
             _sessions.Add(session);

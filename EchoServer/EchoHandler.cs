@@ -1,4 +1,5 @@
 ﻿using Dignus.Collections;
+using Dignus.Log;
 using Dignus.Sockets;
 using Dignus.Sockets.Interface;
 using System.Text;
@@ -15,8 +16,8 @@ namespace Echo
                 return;
             }
             var str = Encoding.UTF8.GetString(body);
-            //LogHelper.Debug($"[{DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss:fff")}] {str}");
-
+            LogHelper.Debug($"[{DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss:fff")}] {str}");
+            _session.Dispose();
             var sendBuffer = new ArrayQueue<byte>();
 
             sendBuffer.AddRange(BitConverter.GetBytes(body.Length));
