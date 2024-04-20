@@ -1,6 +1,6 @@
 ﻿using Dignus.Collections;
 using Dignus.Log;
-using Dignus.Sockets.Interface;
+using Dignus.Sockets.Interfaces;
 using System.Text;
 using System.Text.Json;
 
@@ -22,7 +22,7 @@ namespace EchoClient.Serializer
 
             if (packetSize == 0)
             {
-
+                return;
             }
             var bodyBytes = buffer.Read(packetSize);
             var str = Encoding.UTF8.GetString(bodyBytes);

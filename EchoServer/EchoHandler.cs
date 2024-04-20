@@ -1,44 +1,38 @@
 ﻿using Dignus.Collections;
-using Dignus.Log;
-using Dignus.Sockets;
-using Dignus.Sockets.Interface;
-using System.Text;
+using Dignus.Sockets.Interfaces;
 
 namespace Echo
 {
     public class EchoHandler : ISessionHandler
     {
-        private Session _session;
+        private ISession _session;
         public void Process(byte[] body)
         {
-            if (_session.IsDispose() == true)
+            if (_session == null)
             {
                 return;
             }
-            var str = Encoding.UTF8.GetString(body);
-            LogHelper.Debug($"[{DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss:fff")}] {str}");
-            _session.Dispose();
+            //var str = Encoding.UTF8.GetString(body);
+            //LogHelper.Debug($"[{DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss:fff")}] {str}");
             var sendBuffer = new ArrayQueue<byte>();
-
             sendBuffer.AddRange(BitConverter.GetBytes(body.Length));
-
             sendBuffer.AddRange(body);
-
-            MessageSender.Instance.Broadcast(sendBuffer.ToArray());
+            MessageSender.Instance.Echo(_session, [.. sendBuffer]);
         }
 
-        public void SetSession(Session session)
+        public void SetSession(ISession session)
         {
             _session = session;
         }
-        public Session GetSession()
+        public ISession GetSession()
         {
             return _session;
         }
 
         public void Dispose()
         {
-
+            _session.Dispose();
+            _session = null;
         }
     }
 }

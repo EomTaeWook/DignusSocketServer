@@ -1,7 +1,7 @@
 ﻿using Dignus.Extensions.Log;
 using Dignus.Log;
 using Dignus.Sockets;
-using Dignus.Sockets.Interface;
+using Dignus.Sockets.Interfaces;
 using EchoClient.Serializer;
 
 namespace EchoClient
@@ -19,12 +19,12 @@ namespace EchoClient
                 return Tuple.Create<IPacketSerializer,
                     IPacketDeserializer,
                     ICollection<ISessionHandler>>(new DummySerializer(),
-                                                                                                            new DummyDeserializer(),
-                                                                                                            new List<ISessionHandler>() { });
+                        new DummyDeserializer(),
+                        new List<ISessionHandler>() { });
             });
 
             var poolCount = 1;
-            var SendedCount = 10000;
+            var sendedCount = 10000;
 
             var clientPool = new List<ClientModule>();
 
@@ -39,7 +39,7 @@ namespace EchoClient
                 clientPool[i].Connect("127.0.0.1", 10000);
                 if (clientPool[i].IsConnect == true)
                 {
-                    for (int ii = 0; ii < SendedCount; ++ii)
+                    for (int ii = 0; ii < sendedCount; ++ii)
                     {
                         DummyPacket packet = new()
                         {
@@ -58,7 +58,7 @@ namespace EchoClient
 
             while (true)
             {
-                if (SendedCount * clientPool.Count <= ClientModule.DummyPackets.Count)
+                if (sendedCount * clientPool.Count <= ClientModule.DummyPackets.Count)
                 {
                     break;
                 }
@@ -67,19 +67,19 @@ namespace EchoClient
                     Send = DateTime.Now,
                     Index = 0,
                 };
-                //clientPool[0].Send(Packet.MakePacket(packet));
+                clientPool[0].Send(Packet.MakePacket(packet));
                 //LogHelper.Debug($"rec count : {ClientModule.DummyPackets.Count}");
-                Thread.Sleep(33);
             }
 
             foreach (var item in ClientModule.DummyPackets)
             {
                 avg += (item.Receive - item.Send).TotalMilliseconds;
             }
-
             avg = (avg / 1000) / ClientModule.DummyPackets.Count;
 
+            Console.WriteLine();
             Console.WriteLine(avg);
+
             ClientModule.DummyPackets.Clear();
 
 

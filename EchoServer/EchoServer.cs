@@ -1,5 +1,6 @@
 ﻿using Dignus.Log;
 using Dignus.Sockets;
+using Dignus.Sockets.Interfaces;
 
 namespace Echo
 {
@@ -9,14 +10,14 @@ namespace Echo
         {
         }
 
-        protected override void OnAccepted(Session session)
+        protected override void OnAccepted(ISession session)
         {
             LogHelper.Info($"[server] session accepted - {session.Id}");
 
             MessageSender.Instance.AddSession(session);
         }
 
-        protected override void OnDisconnected(Session session)
+        protected override void OnDisconnected(ISession session)
         {
             LogHelper.Info($"[server] session disconnected - {session.Id}");
 

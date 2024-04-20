@@ -1,5 +1,6 @@
 ﻿using Dignus.Collections;
 using Dignus.Sockets;
+using Dignus.Sockets.Interfaces;
 
 namespace EchoClient
 {
@@ -12,12 +13,12 @@ namespace EchoClient
 
         }
 
-        protected override void OnConnected(Session session)
+        protected override void OnConnected(ISession session)
         {
             _isConnect = true;
         }
 
-        protected override void OnDisconnected(Session session)
+        protected override void OnDisconnected(ISession session)
         {
             _isConnect = false;
         }

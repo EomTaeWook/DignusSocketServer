@@ -1,6 +1,6 @@
 ﻿using Dignus.Log;
 using Dignus.Sockets;
-using Dignus.Sockets.Interface;
+using Dignus.Sockets.Interfaces;
 
 namespace Echo
 {

@@ -1,6 +1,6 @@
 ﻿using Dignus.Collections;
 using Dignus.Log;
-using Dignus.Sockets.Interface;
+using Dignus.Sockets.Interfaces;
 
 namespace Echo
 {
@@ -23,7 +23,7 @@ namespace Echo
 
         public bool IsCompletePacketInBuffer(ArrayQueue<byte> buffer)
         {
-            if (_protocolHandler.GetSession().IsDispose() == true)
+            if (_protocolHandler.GetSession() == null)
             {
                 LogHelper.Debug($"{_protocolHandler.GetSession().Id} is closed");
                 return false;
