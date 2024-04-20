@@ -14,7 +14,7 @@ namespace EchoClient
             LogBuilder.Configuration(LogConfigXmlReader.Load($"{AppContext.BaseDirectory}DignusLog.config"));
             LogBuilder.Build();
 
-            var sessionCreator = new SessionCreator(() =>
+            var sessionInitializer = new SessionInitializer(() =>
             {
                 return Tuple.Create<IPacketSerializer,
                     IPacketDeserializer,
@@ -30,7 +30,7 @@ namespace EchoClient
 
             for (var i = 0; i < poolCount; ++i)
             {
-                clientPool.Add(new ClientModule(sessionCreator));
+                clientPool.Add(new ClientModule(sessionInitializer));
             }
 
             for (var i = 0; i < clientPool.Count; ++i)

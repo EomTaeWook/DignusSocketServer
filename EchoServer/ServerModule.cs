@@ -13,7 +13,7 @@ namespace Echo
         }
         public void Run()
         {
-            var sessionCreator = new SessionCreator(() =>
+            var sessionInitializer = new SessionInitializer(() =>
             {
                 EchoHandler handler = new();
 
@@ -22,7 +22,7 @@ namespace Echo
                     new DummyDeserializer(handler),
                     new List<ISessionHandler>() { handler });
             });
-            _server = new EchoServer(sessionCreator);
+            _server = new EchoServer(sessionInitializer);
             _server.Start(10000);
             isActive = true;
 
