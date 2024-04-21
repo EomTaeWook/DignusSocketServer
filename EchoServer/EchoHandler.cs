@@ -17,7 +17,7 @@ namespace Echo
             var sendBuffer = new ArrayQueue<byte>();
             sendBuffer.AddRange(BitConverter.GetBytes(body.Length));
             sendBuffer.AddRange(body);
-            MessageSender.Instance.Echo(_session, [.. sendBuffer]);
+            MessageSender.Instance.Echo(_session, sendBuffer.ToArray());
         }
 
         public void SetSession(ISession session)
@@ -31,7 +31,6 @@ namespace Echo
 
         public void Dispose()
         {
-            _session.Dispose();
             _session = null;
         }
     }

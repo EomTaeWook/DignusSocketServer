@@ -8,7 +8,7 @@ namespace EchoClient
     {
         public static SynchronizedArrayQueue<DummyPacket> DummyPackets = new SynchronizedArrayQueue<DummyPacket>();
         private bool _isConnect = false;
-        public ClientModule(SessionInitializer sessionInitializer) : base(sessionInitializer)
+        public ClientModule(SessionConfiguration sessionConfiguration) : base(sessionConfiguration)
         {
 
         }

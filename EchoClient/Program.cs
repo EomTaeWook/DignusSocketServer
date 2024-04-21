@@ -14,7 +14,7 @@ namespace EchoClient
             LogBuilder.Configuration(LogConfigXmlReader.Load($"{AppContext.BaseDirectory}DignusLog.config"));
             LogBuilder.Build();
 
-            var sessionInitializer = new SessionInitializer(() =>
+            var sessionConfiguration = new SessionConfiguration(() =>
             {
                 return Tuple.Create<IPacketSerializer,
                     IPacketDeserializer,
@@ -30,7 +30,7 @@ namespace EchoClient
 
             for (var i = 0; i < poolCount; ++i)
             {
-                clientPool.Add(new ClientModule(sessionInitializer));
+                clientPool.Add(new ClientModule(sessionConfiguration));
             }
 
             for (var i = 0; i < clientPool.Count; ++i)
@@ -55,7 +55,7 @@ namespace EchoClient
                 }
             }
             double avg = 0;
-
+            var index = 0;
             while (true)
             {
                 if (sendedCount * clientPool.Count <= ClientModule.DummyPackets.Count)
@@ -65,7 +65,7 @@ namespace EchoClient
                 DummyPacket packet = new()
                 {
                     Send = DateTime.Now,
-                    Index = 0,
+                    Index = index++,
                 };
                 clientPool[0].Send(Packet.MakePacket(packet));
                 //LogHelper.Debug($"rec count : {ClientModule.DummyPackets.Count}");

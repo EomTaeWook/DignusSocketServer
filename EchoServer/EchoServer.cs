@@ -6,7 +6,7 @@ namespace Echo
 {
     internal class EchoServer : ServerBase
     {
-        public EchoServer(SessionInitializer sessionInitializer) : base(sessionInitializer)
+        public EchoServer(SessionConfiguration sessionConfiguration) : base(sessionConfiguration)
         {
         }
 

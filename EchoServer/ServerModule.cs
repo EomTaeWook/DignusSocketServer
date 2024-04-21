@@ -13,7 +13,7 @@ namespace Echo
         }
         public void Run()
         {
-            var sessionInitializer = new SessionInitializer(() =>
+            var sessionInitializer = new SessionConfiguration(() =>
             {
                 EchoHandler handler = new();
 
