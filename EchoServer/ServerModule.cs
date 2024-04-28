@@ -23,7 +23,7 @@ namespace Echo
                     new List<ISessionHandler>() { handler });
             });
             _server = new EchoServer(sessionInitializer);
-            _server.Start(10000);
+            _server.Start(10000, ProtocolType.Tcp);
             isActive = true;
 
             LogHelper.Info($"start server... port : {10000}");
