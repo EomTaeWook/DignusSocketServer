@@ -18,9 +18,9 @@ namespace EchoClient
             {
                 return Tuple.Create<IPacketSerializer,
                     IPacketDeserializer,
-                    ICollection<ISessionHandler>>(new DummySerializer(),
+                    ICollection<ISessionComponent>>(new DummySerializer(),
                         new DummyDeserializer(),
-                        new List<ISessionHandler>() { });
+                        new List<ISessionComponent>() { });
             });
 
             var poolCount = 1;

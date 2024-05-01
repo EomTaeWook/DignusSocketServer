@@ -3,7 +3,7 @@ using Dignus.Sockets.Interfaces;
 
 namespace Echo
 {
-    public class EchoHandler : ISessionHandler
+    public class EchoHandler : ISessionComponent
     {
         private ISession _session;
         public void Process(byte[] body)

@@ -17,10 +17,10 @@ namespace Echo
             {
                 EchoHandler handler = new();
 
-                return Tuple.Create<IPacketSerializer, IPacketDeserializer, ICollection<ISessionHandler>>(
+                return Tuple.Create<IPacketSerializer, IPacketDeserializer, ICollection<ISessionComponent>>(
                     new DummySerializer(),
                     new DummyDeserializer(handler),
-                    new List<ISessionHandler>() { handler });
+                    new List<ISessionComponent>() { handler });
             });
             _server = new EchoServer(sessionInitializer);
             _server.Start(10000, ProtocolType.Tcp);
