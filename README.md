@@ -1,4 +1,4 @@
-# Dignus Library Server Stress Test Benchmark
+# Dignus Library - High Performance Server Stress Test Benchmark
 
 ## 🔥 Performance Benchmark
 
@@ -9,16 +9,19 @@
 - Max RTT: **85.57 ms**
 - Min RTT: **0.03 ms**
 
+- Total Clients: **5,000**
+- Test Duration: **30 seconds**
+- Total Echo Messages: **5,752,480**
+- Peak Throughput: **191,749 RPS**
+- Max RTT: **53.62 ms**
+- Min RTT: **0.03 ms**
+
 ## 📷 Test Result Screenshot
 
-![Echo Test Result](Images/Result2025-04-27031551.png)
+![Echo Test Result](Images/Result-1.png)
+![Echo Test Result](Images/Result-2.png)
 
 ## ⚙️ Test Environment
 
 - Network: Localhost (127.0.0.1)
 - OS: Windows 11 22H2
-
-## 🏆 Summary
-
-> "로컬 호스트 기준 초당 18만건 이상의 Echo 처리 성능!  
-> 5,000 클라이언트 연결에도 안정적인 왕복 시간(RTT)을 유지하는 고성능 소켓 통신 시스템."
