@@ -1,4 +1,4 @@
-# Dignus Library
+# Dignus Socket Library
 ## High Performance Server Stress Test Benchmark
 
 ## 🔥 Performance Benchmark
