@@ -7,3 +7,7 @@ EchoClient/.vs/*
 EchoClient/bin/*
 EchoClient/obj/*
 EchoServer/EchoServer.csproj.user
+DignusEchoServer/.vs/
+DignusEchoServer/bin/
+DignusEchoServer/obj/
+DignusEchoServer/Properties/
