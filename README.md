@@ -7,8 +7,8 @@
 
 - Total Clients: **5,000**
 - Test Duration: **30 seconds**
-- Total Echo Messages Processed: **5,620,633**
-- Peak Throughput (RPS): **187,354 RPS**
+- Total Echo Messages: **5,620,633**
+- Peak Throughput: **187,354 RPS**
 - Max RTT: **85.57 ms**
 - Min RTT: **0.03 ms**
 
