@@ -35,3 +35,11 @@
 
 - Network: Localhost (127.0.0.1)
 - OS: Windows 11 22H2
+
+## 📚 Dignus Library Structure
+
+> DLL files are located in the `/Dll` directory.
+
+- **Dignus.dll**: Core utilities and framework
+- **Dignus.Sockets.dll**: High-performance socket server/client module
+- **Dignus.Log.dll**: Lightweight logging system
