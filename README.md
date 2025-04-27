@@ -4,8 +4,7 @@
 ## 🔥 Performance Benchmark
 
 - Server address: 127.0.0.1
-- Server port: 1111
-- Working threads: 1
+- Server port: 5000
 - Working clients: 1
 - Working messages: 1000
 - Message size: 32
@@ -19,7 +18,11 @@
 - Data throughput: 119.3 MiB/s
 - Message throughput: 3,910,724 msg/s
 
+---
+
 ![TopPerformance](Image/Dignus_TopPerformance_39107244msg_1251MB.png)
+
+---
 
 ### Test 1 (Cold Start)
 
