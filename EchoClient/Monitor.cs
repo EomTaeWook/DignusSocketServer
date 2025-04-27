@@ -41,13 +41,25 @@ namespace EchoClient
             }
         }
 
-        public void Print()
+        public void Print(string serverName)
         {
             Console.WriteLine($"[Monitor]");
+            if (string.IsNullOrEmpty(serverName) == false)
+            {
+                Console.WriteLine($"[{serverName}]");
+            }
             Console.WriteLine($"Total Client: {_totalClientCount}");
             Console.WriteLine($"Total Received: {_totalReceivedCount}");
             Console.WriteLine($"Max RTT (ms): {MaxRttMs:F2}");
             Console.WriteLine($"Min RTT (ms): {MinRttMs:F2}");
+        }
+
+        public void Clear()
+        {
+            _totalClientCount = 0;
+            _totalReceivedCount = 0;
+            MaxRttMs = -1;
+            MinRttMs = 999999;
         }
     }
 }

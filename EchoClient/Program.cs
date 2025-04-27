@@ -45,6 +45,8 @@ namespace EchoClient
                 }
             }
 
+            LogHelper.Info($"{clients.Count} clients connect complete");
+
             Parallel.ForEach(clients, client =>
             {
                 client.SendEcho("Hello Dignus Socket");
@@ -56,7 +58,7 @@ namespace EchoClient
             {
                 client.Close();
             }
-            Monitor.Instance.Print();
+            Monitor.Instance.Print("SuperSocket2.0");
         }
     }
 }

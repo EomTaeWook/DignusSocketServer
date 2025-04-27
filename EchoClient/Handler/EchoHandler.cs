@@ -24,7 +24,7 @@ namespace EchoClient.Handler
         [ProtocolName("EchoMessageResponse")]
         public void Process(EchoMessage echo)
         {
-            _receivedCount++;
+            Interlocked.Increment(ref _receivedCount);
             var receiveTime = DateTime.UtcNow;
             var rtt = (receiveTime - _lastSendTime).TotalMilliseconds;
 
