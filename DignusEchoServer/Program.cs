@@ -21,16 +21,26 @@ namespace DignusEchoServer
             Console.ReadKey();
         }
 
-        static Tuple<IPacketSerializer, IPacketDeserializer, ICollection<ISessionComponent>> SessionSetupFactory()
+        static Tuple<IPacketSerializer, IPacketProcessor, ICollection<ISessionComponent>> SessionSetupFactory()
         {
             EchoHandler handler = new();
 
             PacketSerializer packetSerializer = new(handler);
 
-            return Tuple.Create<IPacketSerializer, IPacketDeserializer, ICollection<ISessionComponent>>(
+            return Tuple.Create<IPacketSerializer, IPacketProcessor, ICollection<ISessionComponent>>(
                     packetSerializer,
                     packetSerializer,
                     [handler]);
+        }
+
+        static Tuple<IPacketSerializer, IPacketProcessor, ICollection<ISessionComponent>> EchoSetupFactory()
+        {
+            EchoSerializer packetSerializer = new();
+
+            return Tuple.Create<IPacketSerializer, IPacketProcessor, ICollection<ISessionComponent>>(
+                    packetSerializer,
+                    packetSerializer,
+                    []);
         }
     }
 }
