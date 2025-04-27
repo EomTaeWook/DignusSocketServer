@@ -16,6 +16,17 @@ namespace EchoClient
         {
             _echoHandler.SendEcho(message);
         }
+        public void SendMessage(byte[] message, int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                SendAsync(message);
+            }
+        }
+        public Task SendAsync(byte[] bytes)
+        {
+            return Task.Factory.StartNew(() => { Send(bytes); }, TaskCreationOptions.DenyChildAttach | TaskCreationOptions.RunContinuationsAsynchronously);
+        }
         protected override void OnConnected(ISession session)
         {
             _session = session;
@@ -24,7 +35,6 @@ namespace EchoClient
                 if (component is EchoHandler echoHandler)
                 {
                     _echoHandler = echoHandler;
-                    break;
                 }
             }
             _isConnect = true;
