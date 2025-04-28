@@ -11,12 +11,12 @@
 - Seconds to benchmarking: 10
 
 - Errors: 0
-
-- Total time: 10.001 s
-- Total data: 1.225 GiB
-- Total messages: 41,108,797
-- Data throughput: 125.4 MiB/s
-- Message throughput: 4,110,371 msg/s
+- Total Time: 10.003 seconds
+- Total Client: 1
+- Total Data: 1.41 GiB
+- Total Message: 47,256,766
+- Data Throughput: 144.18 MiB/s
+- Message Throughput: 4,724,351 msg/s
 
 ---
 
