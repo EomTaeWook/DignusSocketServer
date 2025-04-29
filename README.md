@@ -20,7 +20,7 @@
 
 ---
 
-![TopPerformance](Image/Dignus_Performance_41108797msg_1225MiB.png)
+![TopPerformance](Image/Dignus_Performance_47256766msg_1.41GiB.png)
 
 ---
 
