@@ -24,7 +24,8 @@ namespace EchoClient.Handler
         [ProtocolName("EchoMessageResponse")]
         public void Process(EchoMessage echo)
         {
-            Interlocked.Increment(ref _receivedCount);
+            SendEcho(echo.Message);
+
             var receiveTime = DateTime.UtcNow;
             var rtt = (receiveTime - _lastSendTime).TotalMilliseconds;
 
@@ -36,8 +37,7 @@ namespace EchoClient.Handler
             {
                 MinRttMs = rtt;
             }
-
-            SendEcho(echo.Message);
+            Interlocked.Increment(ref _receivedCount);
         }
 
         public void OtherMessageResponse(OtherMessageResponse otherMeesage)
@@ -59,7 +59,7 @@ namespace EchoClient.Handler
             });
 
             _lastSendTime = DateTime.UtcNow;
-            session.Send(new Packet((int)CSProtocol.EchoMessage, body));
+            session.TrySend(new Packet((int)CSProtocol.EchoMessage, body));
         }
         public void SetSession(ISession session)
         {

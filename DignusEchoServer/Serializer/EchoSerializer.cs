@@ -1,4 +1,5 @@
 ﻿using Dignus.Collections;
+using Dignus.Sockets;
 using Dignus.Sockets.Interfaces;
 using DignusEchoServer.Packets;
 
@@ -8,7 +9,10 @@ namespace DignusEchoServer.Serializer
     {
         public void ProcessPacket(ISession session, in ArraySegment<byte> packet)
         {
-            session.Send(packet);
+            if (session.TrySend(packet) == false)
+            {
+                Console.WriteLine("failed to send");
+            }
         }
 
         public ArraySegment<byte> MakeSendBuffer(IPacket packet)
@@ -20,15 +24,10 @@ namespace DignusEchoServer.Serializer
             return sendPacket.Body;
         }
 
-        public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet)
+        public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet, out int consumedBytes)
         {
-            packet = null;
-            if (buffer.TryRead(out byte[] bytes, buffer.Count) == false)
-            {
-                return false;
-            }
-            packet = bytes;
-            return true;
+            consumedBytes = buffer.Count;
+            return buffer.TrySlice(out packet, consumedBytes);
         }
     }
 }

@@ -9,40 +9,36 @@ namespace DignusEchoServer.Serializer
 {
     internal class PacketSerializer(EchoHandler echoHandler) : IPacketProcessor, IPacketSerializer
     {
+        private const int HeaderSize = sizeof(int) * 2;
         private const int SizeToInt = sizeof(int);
+
+        public void ProcessPacket(ISession session, in ArraySegment<byte> packet)
+        {
+            var protocol = BitConverter.ToInt32(packet.Array, packet.Offset);
+            var size = packet.Array.Length - packet.Offset - SizeToInt;
+            var bodyString = Encoding.UTF8.GetString(packet.Array, packet.Offset + SizeToInt, size);
+            ProtocolHandlerMapper<EchoHandler, string>.DispatchProtocolAction(echoHandler, protocol, bodyString);
+        }
+
         public ArraySegment<byte> MakeSendBuffer(IPacket packet)
         {
             if (packet is Packet sendPacket == false)
             {
-                throw new InvalidCastException(nameof(packet));
+                throw new InvalidOperationException("Invalid packet type");
             }
+            var packetSize = sendPacket.GetLength();
+            byte[] sendBuffer = new byte[packetSize + SizeToInt];
 
-            byte[] buffer = new byte[SizeToInt + sendPacket.GetLength()];
+            Buffer.BlockCopy(BitConverter.GetBytes(packetSize), 0, sendBuffer, 0, SizeToInt);
+            Buffer.BlockCopy(BitConverter.GetBytes(sendPacket.Protocol), 0, sendBuffer, SizeToInt, SizeToInt);
+            Buffer.BlockCopy(sendPacket.Body, 0, sendBuffer, HeaderSize, sendPacket.Body.Length);
 
-            var bodySizeBytes = BitConverter.GetBytes(sendPacket.GetLength());
-
-            Array.Copy(bodySizeBytes, buffer, SizeToInt);
-            var protocolBytes = BitConverter.GetBytes(sendPacket.Protocol);
-
-            Array.Copy(protocolBytes, 0, buffer, SizeToInt, SizeToInt);
-
-            Array.Copy(sendPacket.Body, 0, buffer, SizeToInt + SizeToInt, sendPacket.Body.Length);
-
-            return buffer;
+            return sendBuffer;
         }
-
-        public void ProcessPacket(ISession session, in ArraySegment<byte> packet)
-        {
-            var protocol = BitConverter.ToInt32(packet.Array, 0);
-
-            var bodyString = Encoding.UTF8.GetString(packet.Array, 4, packet.Array.Length - 4);
-
-            ProtocolHandlerMapper<EchoHandler, string>.DispatchProtocolAction(echoHandler, protocol, bodyString);
-        }
-
-        public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet)
+        public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet, out int consumedBytes)
         {
             packet = null;
+            consumedBytes = 0;
             if (buffer.Count < SizeToInt)
             {
                 return false;
@@ -57,17 +53,17 @@ namespace DignusEchoServer.Serializer
                 return false;
             }
 
-            if (buffer.TryRead(out _, SizeToInt) == false)
+            if (buffer.TryReadBytes(out _, SizeToInt) == false)
             {
                 return false;
             }
 
-            if (buffer.TryRead(out byte[] bodyBytes, bodySize) == false)
+            if (buffer.TrySlice(out packet, bodySize) == false)
             {
                 return false;
             }
 
-            packet = bodyBytes;
+            consumedBytes = bodySize;
 
             return true;
         }

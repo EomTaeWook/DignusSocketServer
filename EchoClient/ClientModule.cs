@@ -1,5 +1,6 @@
 ﻿using Dignus.Sockets;
 using Dignus.Sockets.Interfaces;
+using EchoClient.Extensions;
 using EchoClient.Handler;
 
 namespace EchoClient
@@ -20,12 +21,8 @@ namespace EchoClient
         {
             for (int i = 0; i < count; i++)
             {
-                SendAsync(message);
+                _session.SendAsync(message);
             }
-        }
-        public Task SendAsync(byte[] bytes)
-        {
-            return Task.Factory.StartNew(() => { Send(bytes); }, TaskCreationOptions.DenyChildAttach | TaskCreationOptions.RunContinuationsAsynchronously);
         }
         protected override void OnConnected(ISession session)
         {
