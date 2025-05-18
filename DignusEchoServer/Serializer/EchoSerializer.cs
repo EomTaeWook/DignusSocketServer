@@ -5,16 +5,8 @@ using DignusEchoServer.Packets;
 
 namespace DignusEchoServer.Serializer
 {
-    internal class EchoSerializer() : IPacketProcessor, IPacketSerializer
+    internal class EchoSerializer() : ISessionReceiver, IPacketSerializer
     {
-        public void ProcessPacket(ISession session, in ArraySegment<byte> packet)
-        {
-            if (session.TrySend(packet) == false)
-            {
-                Console.WriteLine("failed to send");
-            }
-        }
-
         public ArraySegment<byte> MakeSendBuffer(IPacket packet)
         {
             if (packet is Packet sendPacket == false)
@@ -24,10 +16,14 @@ namespace DignusEchoServer.Serializer
             return sendPacket.Body;
         }
 
-        public bool TakeReceivedPacket(ArrayQueue<byte> buffer, out ArraySegment<byte> packet, out int consumedBytes)
+        public void OnReceived(ISession session, ArrayQueue<byte> buffer)
         {
-            consumedBytes = buffer.Count;
-            return buffer.TrySlice(out packet, consumedBytes);
+            var count = buffer.Count;
+            buffer.TryReadBytes(out var pacekt, count);
+            if (session.TrySend(pacekt) == false)
+            {
+                Console.WriteLine("failed to send");
+            }
         }
     }
 }
