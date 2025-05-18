@@ -41,6 +41,7 @@ namespace EchoClient.Serializer
         {
             var count = buffer.Count;
             _receivedSize += count;
+            buffer.Advance(count);
             while (_receivedSize >= Consts.Message.Length)
             {
                 //try
@@ -54,8 +55,7 @@ namespace EchoClient.Serializer
                 _session.SendAsync(Consts.Message);
                 _receivedSize -= Consts.Message.Length;
             }
-            buffer.Advance(count);
-            Interlocked.Add(ref _totalBytes, buffer.Count);
+            Interlocked.Add(ref _totalBytes, count);
         }
     }
 }

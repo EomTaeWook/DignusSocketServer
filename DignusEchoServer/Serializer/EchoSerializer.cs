@@ -19,10 +19,13 @@ namespace DignusEchoServer.Serializer
         public void OnReceived(ISession session, ArrayQueue<byte> buffer)
         {
             var count = buffer.Count;
-            buffer.TryReadBytes(out var pacekt, count);
-            if (session.TrySend(pacekt) == false)
+            if (buffer.TrySlice(out var packet, count) == true)
             {
-                Console.WriteLine("failed to send");
+                if (session.TrySend(packet) == false)
+                {
+                    Console.WriteLine("failed to send");
+                }
+                buffer.Advance(count);
             }
         }
     }
