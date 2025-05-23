@@ -7,7 +7,7 @@ using System.Net.Sockets;
 
 namespace EchoClient.Serializer
 {
-    internal class EchoSerializer() : ISessionReceiver, IPacketSerializer, ISessionComponent
+    internal class EchoSerializer() : ISessionPacketProcessor, IPacketSerializer, ISessionComponent
     {
         private long _totalBytes = 0;
         private double _maxRttMs = -1;
@@ -44,18 +44,10 @@ namespace EchoClient.Serializer
             buffer.Advance(count);
             while (_receivedSize >= Consts.Message.Length)
             {
-                //try
-                //{
-                //    session.Send(Consts.Message);
-                //}
-                //catch (Exception ex)
-                //{
-                //    LogHelper.Error(ex);
-                //}
                 _session.SendAsync(Consts.Message);
                 _receivedSize -= Consts.Message.Length;
             }
-            Interlocked.Add(ref _totalBytes, count);
+            _totalBytes += count;
         }
     }
 }

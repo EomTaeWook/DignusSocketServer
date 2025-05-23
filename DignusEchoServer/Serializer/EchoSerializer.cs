@@ -5,7 +5,7 @@ using DignusEchoServer.Packets;
 
 namespace DignusEchoServer.Serializer
 {
-    internal class EchoSerializer() : ISessionReceiver, IPacketSerializer
+    internal class EchoSerializer() : ISessionPacketProcessor, IPacketSerializer
     {
         public ArraySegment<byte> MakeSendBuffer(IPacket packet)
         {
@@ -27,6 +27,7 @@ namespace DignusEchoServer.Serializer
                 }
                 buffer.Advance(count);
             }
+            //Console.WriteLine($"echo : {count}");
         }
     }
 }
