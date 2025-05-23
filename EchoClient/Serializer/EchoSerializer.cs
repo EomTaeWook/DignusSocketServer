@@ -7,7 +7,7 @@ using System.Net.Sockets;
 
 namespace EchoClient.Serializer
 {
-    internal class EchoSerializer() : ISessionReceiver, IPacketSerializer, ISessionComponent
+    internal class EchoSerializer() : ISessionPacketProcessor, IPacketSerializer, ISessionComponent
     {
         private long _totalBytes = 0;
         private double _maxRttMs = -1;
