@@ -41,7 +41,11 @@ namespace EchoClient
             {
                 var sessionConfiguration = new SessionConfiguration(EchoSetupFactory);
 
+<<<<<<< HEAD
                 sessionConfiguration.SocketOption.SendBufferSize = 65536 * 100;
+=======
+                sessionConfiguration.SocketOption.SendBufferSize = 65536 * 20;
+>>>>>>> 2c73c0057f6c0f0282055ec355abea184c46ebe7
 
                 var client = new ClientModule(sessionConfiguration);
 
