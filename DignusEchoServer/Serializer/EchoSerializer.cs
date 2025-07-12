@@ -21,7 +21,7 @@ namespace DignusEchoServer.Serializer
             var count = buffer.Count;
             if (buffer.TrySlice(out var packet, count) == true)
             {
-                if (session.TrySend(packet) == false)
+                if (session.Send(packet) != SendResult.Success)
                 {
                     Console.WriteLine("failed to send");
                 }
