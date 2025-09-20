@@ -35,13 +35,11 @@ namespace EchoClient
             var clients = new List<ClientModule>();
             LogHelper.Info($"start");
 
-            ThreadPool.GetMinThreads(out int workerThreads, out int ioThreads);
-            ThreadPool.SetMinThreads(workerThreads, ioThreads + 100);
-
             {
                 var sessionConfiguration = new SessionConfiguration(EchoSetupFactory);
 
-                sessionConfiguration.SocketOption.SendBufferSize = 65536 * 100;
+                sessionConfiguration.SocketOption.SendBufferSize = 65536;
+                sessionConfiguration.SocketOption.MaxPendingSendBytes = int.MaxValue;
 
                 var client = new ClientModule(sessionConfiguration);
 
